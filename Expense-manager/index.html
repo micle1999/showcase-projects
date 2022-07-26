@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.css" rel="stylesheet">
+        <link rel="stylesheet" href="styles.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="scripts/expense.js"></script>
+        <script src="scripts/expenseList.js"></script>
+        <script src="scripts/utils.js"></script>
+
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+        <title>Expense Manager</title>
+    </head>
+    <body>
+        <section id="main">
+            <section id = "graphics">
+                <section id = "cashflow">
+                    <div class = "stats-head">
+                        <h3 class = "main-heading cashflow-heading">Statistics</h3>
+                        <input name="startDate" id="startDate" class="date-picker" placeholder="Select month"/>
+                    </div>
+                    <div class="budget-container">
+                        <span id="month-cashflow" class="month-amount"></span>
+                        <span id="month-investments" class="month-amount"></span>
+                        <span id="month-savings" class="month-amount"></span>
+                    </div>
+                </section>
+                <section id = "graph">
+                    <p id = "graph-info"></p>
+                    <canvas id="expense-chart"></canvas>
+                </section>
+            </section>
+            <section id = "tracker">
+                <section id = "type">
+                    <div class = "tracker-heading">
+                        <h3 class = "main-heading">Track Your Budget</h3>
+                        <p id = "validation-message"></p>
+                    </div>
+                    <div id = "buttons">
+                        <div id = "4-buttons-row">
+                            <button id = "income-btn" class ="decision-button">Income</button>
+                            <button id = "expense-btn" class="decision-button">Expense</button>
+                            <button id = "investment-btn" class="decision-button">Investment</button>
+                            <button id = "savings-btn" class="decision-button">Savings</button>
+                        </div>
+                        <div id = "3-buttons-row">
+                            <button id = "dollar-btn" class ="currency-button">$</button>
+                            <button id = "euro-btn" class="currency-button">€</button>
+                            <button id = "crown-btn" class="currency-button">Kč</button>
+                        </div>
+                    </div>
+                </section>
+                <section id = "expense-input-data">
+                    <div>
+                        <input type="text" id = "expense-comment" class="expense-input" placeholder="Description">
+                        <input type="number" id = "expense-amount" class="expense-input" placeholder="Value">
+                        <button type="button" id = "add-expense-btn">&check;</button>
+                    </div>
+                </section>
+                <section id = "expense-list">
+                    <div id = "list">
+                    </div>
+                </section>
+            </section>
+        </section>
+
+        <script src="app.js"></script>
+
+    </body>
+</html>
+

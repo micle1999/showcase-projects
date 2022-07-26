@@ -1,0 +1,398 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    color: #555;
+    font-family: 'Roboto',sans-serif;
+    font-size: 16px;
+    position: relative;
+    font-weight: 400;
+}
+
+#main {
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    margin: 5%;
+    animation: reveal 3s forwards;
+}
+
+#graphics {
+    display: flex;
+    flex-direction: column;
+    background-color: olivedrab;
+    flex: 0.4;
+    height: 560px;
+    background-image: linear-gradient(#0277BD, #03A9F4);
+    box-shadow: rgba(0, 0, 0, 0.15) 4px 5px 2.6px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+
+#tracker {
+    display: flex;
+    flex-direction: column;
+    box-shadow: rgba(0, 0, 0, 0.15) 2px 2px 2.6px;
+    flex: 0.6;
+    height: 560px;
+    width: 100%;
+    position: relative;
+    padding-left: 2%;
+}
+
+
+#cashflow {
+    flex: 0.4;
+    margin: 15px;
+    padding-left: 5%;
+}
+
+
+#graph {
+    flex: 0.6;
+    margin: 15px;
+}
+
+
+#type {
+    flex: 0.2;
+    margin: 15px;
+}
+
+#buttons{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+
+#4-buttons-row{
+    flex: 0.9;
+}
+
+
+#3-buttons-row{
+    flex: 0.1;
+}
+
+
+
+.expense-input{
+    width:100%;
+    padding:10px;
+    box-sizing:border-box;
+    background:none;
+    outline:none;
+    resize:none;
+    border:0;
+    transition:all .5s;
+    border-bottom:2px solid #bebed2
+}
+
+input:focus{
+    border-bottom:2px solid #78788c
+}
+
+#expense-input-data {
+    flex: 0.1;
+    margin: 15px;
+}
+
+
+#expense-input-data div {
+    display : flex;
+    flex-direction: row;
+}
+
+
+#expense-comment {
+    height: 2em;
+    flex: 0.65;
+    margin-right: 3%;
+}
+
+#expense-amount{
+    height: 2em;
+    flex: 0.30;
+    margin-right: 3%;
+}
+
+#add-expense-btn{
+    background-image: linear-gradient(#0277BD, #03A9F4);
+    flex: 0.05;
+    display: inline-block;
+    padding: 0.3em 1.2em;
+    margin: 0 0.1em 0.1em 0;
+    border: 0.16em solid rgba(255,255,255,0);
+    border-radius: 2em;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: 'Roboto',sans-serif;
+    font-weight: 300;
+    color: #FFFFFF;
+    text-shadow: 0 0.04em 0.04em rgba(0,0,0,0.35);
+    text-align: center;
+    transition: all 0.2s;
+}
+
+#add-expense-btn:hover{
+    border-color: rgba(255,255,255,1);
+}
+
+#expense-btn{
+    background-color: #f14e4e;
+}
+
+#income-btn{
+    background-color: #9a4ef1;
+}
+
+#savings-btn{
+    background-color: #42cc8c;
+}
+
+#investment-btn{
+    background-color: #f1bb4e;
+}
+
+#expense-chart{
+    width: 100% !important;
+    height: auto !important;
+}
+
+.decision-button{
+    display: inline-block;
+    height: 28px;
+    padding: 0.3em 1.2em;
+    margin: 0 1.1em 0em 0;
+    border: 0.16em solid rgba(255,255,255,0);
+    border-radius: 2em;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: 'Roboto',sans-serif;
+    font-weight: 300;
+    color: #FFFFFF;
+    text-shadow: 0 0.04em 0.04em rgba(0,0,0,0.35);
+    text-align: center;
+    transition: all 0.2s;
+}
+
+.currency-button{
+    display: inline-block;
+    height: 28px;
+    padding: 0.3em 1.2em;
+    margin: 0 1.1em 0em 0;
+    border: 0.16em solid rgba(255,255,255,0);
+    border-radius: 2em;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: 'Roboto',sans-serif;
+    font-weight: 300;
+    color: #FFFFFF;
+    background-image: linear-gradient(#0277BD, #03A9F4);
+    text-shadow: 0 0.04em 0.04em rgba(0,0,0,0.35);
+    text-align: center;
+    transition: all 0.2s;
+}
+
+.decision-button:hover{
+    border-color: rgba(255,255,255,1);
+}
+
+.currency-button:hover{
+    border-color: rgba(255,255,255,1);
+}
+
+#expense-list {
+    flex: 0.65;
+    margin: 15px;
+    overflow-y: scroll;
+    margin-bottom: 4em;
+}
+
+.main-heading{
+    font-size: 22px;
+    margin-top: 80px;
+    margin-bottom: 20px;
+}
+
+.cashflow-heading{
+    color: white;
+}
+
+.active{
+    border-style: solid;
+    border-width: 2px;
+    border-color:#0277BD !important;
+}
+
+.budget-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.month-amount{
+
+    border-radius: 5px;
+    margin-top: 3%;
+    background-color: white;
+    padding: 1.5%;
+    box-shadow: rgba(0, 0, 0, 0.4) 2px 4px 4px;;
+}
+
+#month-cashflow{
+    flex: 0.31;
+    margin-right: 10px;
+}
+
+#month-investments{
+    flex: 0.31;
+    margin-right: 10px;
+}
+
+#month-savings{
+    flex: 0.31;
+}
+
+@keyframes reveal {
+    0%{
+        transform: rotate(180deg);
+        margin-top: 100%;
+    }
+    100%{
+        transform: rotate(360deg);
+        margin-top: 3%;
+    }
+}
+
+
+.bottom-border {
+    border-bottom: 2px solid #bebed2;
+}
+
+.expense-row {
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+}
+
+.expense-date {
+    color: #077CC1;
+    flex: 0.2;
+}
+
+.expense-text {
+    color: #077CC1;
+    flex: 0.7;
+}
+
+.expense-value{
+    color: #077CC1;
+    flex: 0.1;
+    text-align: right;
+    white-space: nowrap;
+}
+
+#graph-info{
+    font-size: 20px;
+    text-align: center;
+}
+
+.income-amount{
+    color: #9a4ef1;
+}
+
+.expense-amount{
+    color: #f14e4e;
+}
+
+.investment-amount{
+    color: #f1bb4e;
+}
+
+.savings-amount{
+    color: #42cc8c;
+}
+
+.ui-datepicker-calendar {
+    display: none;
+}
+
+
+.ui-datepicker-close { display: none; }
+
+.ui-datepicker-current { display: none; }
+
+.tracker-heading{
+    display: flex;
+    flex-direction: column;
+}
+
+.main-heading{
+    flex : 0.7;
+}
+
+#validation-message{
+    flex : 0.3;
+    padding-bottom: 1%;
+    color: #f14e4e;
+}
+
+.date-picker{
+    width:22%;
+    box-sizing:border-box;
+    background:none;
+    outline:none;
+    resize:none;
+    border:0;
+    transition:all .5s;
+    border-bottom:2px solid #bebed2
+}
+
+
+
+@media screen and (max-width: 1320px) {
+    #buttons{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+}
+
+
+@media screen and (max-width: 1100px) {
+
+    #buttons{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    #main {
+        flex-direction: column;
+    }
+
+    #tracker {
+        display: flex;
+        flex-direction: column;
+        box-shadow: rgba(0, 0, 0, 0.15) 2px 2px 2.6px;
+        flex: 0.6;
+        height: 560px;
+        width: 100%;
+        position: relative;
+        padding-left: 2%;
+    }
+}
+
+
+@media screen and (min-height: 650px) and (max-width: 1100px)  {
+
+    #tracker {
+        height: 1000px;
+    }
+}

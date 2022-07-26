@@ -1,0 +1,1763 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "drinKing API",
+    "description": "REST API Documentation for drinKing app."
+  },
+  "host": "deepdive-drinking-app.herokuapp.com",
+  "definitions": {
+    "manager": {
+      "properties": {
+        "username": {
+          "type": "string",
+          "description": "Username of the manager."
+        },
+        "email": {
+          "type": "string",
+          "description": "Email of the manager."
+        },
+        "password": {
+          "type": "string",
+          "description": "Password of the manager."
+        }
+      }
+    },
+    "bar": {
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the bar."
+        },
+        "address": {
+          "type": "object",
+          "description": "Address of the bar.",
+          "properties": {
+            "street": {
+              "type": "string"
+            },
+            "building_number": {
+              "type": "string"
+            },
+            "city": {
+              "type": "string"
+            },
+            "postal_code": {
+              "type": "string"
+            }
+          }
+        },
+        "phone_number": {
+          "type": "string",
+          "description": "Phone number of the bar."
+        }
+      }
+    },
+    "event": {
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the event."
+        },
+        "bar_id": {
+          "type": "string",
+          "description": "Bar id in which will be event held."
+        },
+        "start_date": {
+          "type": "Timestamp",
+          "description": "Start date of the event."
+        },
+        "end_date": {
+          "type": "Timestamp",
+          "description": "End date of the event."
+        }
+      }
+    },
+    "rewards": {
+      "type": "array",
+      "properties": {
+        "value": {
+          "type": "string",
+          "description": "Value of the reward."
+        },
+        "discount_type": {
+          "type": "string",
+          "description": "Discount type of the reward (either cash or percent)."
+        },
+        "reward_type": {
+          "type": "string",
+          "description": "Reward type is either gold, silver or bronze."
+        },
+        "currency": {
+          "type": "string",
+          "description": "Abbreviation of currency (e.g. Czk)."
+        }
+      }
+    },
+    "transaction": {
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Code of the transaction."
+        },
+        "value": {
+          "type": "number",
+          "description": "Value of the transaction."
+        },
+        "validated": {
+          "type": "boolean",
+          "description": "Validated flag."
+        },
+        "expiration_date": {
+          "type": "number",
+          "description": "Expiration date of the transaction."
+        },
+        "user_id": {
+          "type": "string",
+          "description": "Id of the user."
+        },
+        "bar_id": {
+          "type": "string",
+          "description": "Id of the bar."
+        }
+      }
+    }
+  },
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Users"
+    },
+    {
+      "name": "Profile"
+    },
+    {
+      "name": "Events"
+    },
+    {
+      "name": "Bars"
+    },
+    {
+      "name": "Receipts"
+    },
+    {
+      "name": "Transactions"
+    }
+  ],
+  "schemes": ["https"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/api/users/register": {
+      "post": {
+        "description": "Post data and register",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "body",
+            "required": true,
+            "description": "Username of the new user (at least 3 characters and max 126 characters long.)",
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "body",
+            "required": true,
+            "description": "Password for the new user (at least 8 characters , 1 uppercase , 1 number and 1 special character must be included.)",
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "in": "body",
+            "required": true,
+            "description": "Email of the user.",
+            "type": "string"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "201": {
+            "description": "New user was created.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string"
+                },
+                "expirationDate": {
+                  "type": "date"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Username or email duplicity."
+          },
+          "422": {
+            "description": "Invalid data posted in body."
+          },
+          "500": {
+            "description": "Server side error."
+          }
+        }
+      }
+    },
+    "/api/users/login": {
+      "post": {
+        "description": "Post data and login",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "body",
+            "required": true,
+            "description": "Username of the user (at least 3 characters and max 126 characters long.)",
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "body",
+            "required": true,
+            "description": "Password of the  user (at least 8 characters , 1 uppercase , 1 number and 1 special character must be included.)",
+            "type": "string"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Successfully logged.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string"
+                },
+                "expirationDate": {
+                  "type": "date"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not Authorized."
+          },
+          "404": {
+            "description": "User not found."
+          },
+          "422": {
+            "description": "Invalid data posted in body."
+          },
+          "500": {
+            "description": "Server side error."
+          }
+        }
+      }
+    },
+    "/api/users/refresh": {
+      "post": {
+        "description": "Get refresh token if valid.",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "refreshToken",
+            "in": "body",
+            "required": true,
+            "description": "Refresh token for given user.",
+            "type": "string"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Token successfully refreshed.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "expirationDate": {
+                  "type": "date"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Posted refresh token was not found amongst valid tokens."
+          },
+          "422": {
+            "description": "Invalid data posted in body."
+          },
+          "500": {
+            "description": "Server side error."
+          }
+        }
+      }
+    },
+    "/api/users/ban/:userId": {
+      "post": {
+        "description": "Ban or unban user.",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "description": "Id of the user who is to be banned.",
+            "type": "string"
+          },
+          {
+            "name": "banStatus",
+            "in": "body",
+            "required": true,
+            "description": "Boolean status of ban.",
+            "type": "boolean"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Ban status of user changed."
+          },
+          "401": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Server side error."
+          }
+        }
+      }
+    },
+    "/api/users/prizes": {
+      "get": {
+        "description": "Get all prizes of the user.",
+        "tags": ["Users"],
+        "parameters": [],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Ban status of user changed.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "barId": {
+                  "type": "string"
+                },
+                "credits": {
+                  "type": "number"
+                },
+                "barImage": {
+                  "type": "string"
+                },
+                "barName": {
+                  "type": "string"
+                },
+                "barAddress": {
+                  "type": "object",
+                  "properties": {
+                    "street": {
+                      "type": "string"
+                    },
+                    "city": {
+                      "type": "string"
+                    },
+                    "building_number": {
+                      "type": "string"
+                    },
+                    "postal_code": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Server side error."
+          }
+        }
+      }
+    },
+    "/api/users/all": {
+      "get": {
+        "description": "Get all users.",
+        "tags": ["Users"],
+        "parameters": [],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Users object returned.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "number"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "role": {
+                  "type": "string"
+                },
+                "active": {
+                  "type": "boolean"
+                },
+                "profile_image": {
+                  "type": "boolean"
+                },
+                "banned": {
+                  "type": "boolean"
+                },
+                "trophies": {
+                  "type": "object",
+                  "properties": {
+                    "gold": {
+                      "type": "string"
+                    },
+                    "silver": {
+                      "type": "string"
+                    },
+                    "bronze": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "prizes": {
+                  "type": "object",
+                  "properties": {
+                    "bar_id": {
+                      "type": "string"
+                    },
+                    "credits": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "events": {
+                  "type": "array"
+                },
+                "total_events_no": {
+                  "type": "number"
+                },
+                "total_credits_gained": {
+                  "type": "number"
+                },
+                "best_score": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Server side error."
+          }
+        }
+      }
+    },
+    "/api/profile/getPhoto": {
+      "get": {
+        "description": "Get user photo.",
+        "tags": ["Profile"],
+        "parameters": [
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Successfully returning profile image of the user"
+          },
+          "401": {
+            "description": "Not Authorized."
+          },
+          "404": {
+            "description": "No profile image or user found."
+          },
+          "422": {
+            "description": "Invalid parameter in path."
+          },
+          "500": {
+            "description": "Server side error."
+          }
+        }
+      }
+    },
+    "/api/profile/changePhoto": {
+      "post": {
+        "description": "Change user photo.",
+        "tags": ["Profile"],
+        "parameters": [
+          {
+            "name": "image",
+            "in": "body",
+            "required": true,
+            "description": "Base64 image representation.",
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "in": "body",
+            "required": true,
+            "description": "Type of the image.",
+            "type": "string"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Successfully changed profile image returning new profile image of the user",
+            "schema": {
+              "properties": {
+                "image": {
+                  "type": "string",
+                  "description": "Signed url of image to access image."
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not Authorized."
+          },
+          "422": {
+            "description": "Invalid parameter/s."
+          },
+          "500": {
+            "description": "Server side error."
+          }
+        }
+      }
+    },
+    "/api/profile/specific": {
+      "get": {
+        "description": "Get user profile.",
+        "tags": ["Profile"],
+        "parameters": [],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Successfully returning user profile data",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "image": {
+                  "type": "string"
+                },
+                "username": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "number"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "role": {
+                  "type": "string"
+                },
+                "active": {
+                  "type": "boolean"
+                },
+                "profile_image": {
+                  "type": "boolean"
+                },
+                "banned": {
+                  "type": "boolean"
+                },
+                "trophies": {
+                  "type": "object",
+                  "properties": {
+                    "gold": {
+                      "type": "string"
+                    },
+                    "silver": {
+                      "type": "string"
+                    },
+                    "bronze": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "prizes": {
+                  "type": "object",
+                  "properties": {
+                    "bar_id": {
+                      "type": "string"
+                    },
+                    "credits": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "events": {
+                  "type": "array"
+                },
+                "total_events_no": {
+                  "type": "number"
+                },
+                "total_credits_gained": {
+                  "type": "number"
+                },
+                "best_score": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not Authorized."
+          },
+          "404": {
+            "description": "No user found."
+          },
+          "422": {
+            "description": "Invalid parameter/s."
+          },
+          "500": {
+            "description": "Server side error."
+          }
+        }
+      }
+    },
+    "/api/profile/deletePhoto": {
+      "delete": {
+        "description": "Delete user photo.",
+        "tags": ["Profile"],
+        "parameters": [
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Successfully deleted profile image of the user"
+          },
+          "401": {
+            "description": "Not Authorized."
+          },
+          "404": {
+            "description": "No profile image or user found."
+          },
+          "422": {
+            "description": "Invalid parameter in path."
+          },
+          "500": {
+            "description": "Server side error."
+          }
+        }
+      }
+    },
+    "/api/profile/deleteAccount": {
+      "delete": {
+        "description": "Delete user account.",
+        "tags": ["Profile"],
+        "parameters": [
+          {
+            "name": "password",
+            "in": "body",
+            "required": true,
+            "description": "Password of the user.",
+            "type": "string"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Successfully deleted user account."
+          },
+          "401": {
+            "description": "Not Authorized."
+          },
+          "404": {
+            "description": "No user account"
+          },
+          "422": {
+            "description": "Invalid parameter in body."
+          },
+          "500": {
+            "description": "Server side error."
+          }
+        }
+      }
+    },
+
+    "/api/profile/changePassword": {
+      "post": {
+        "description": "Change user password.",
+        "tags": ["Profile"],
+        "parameters": [
+          {
+            "name": "password",
+            "in": "body",
+            "required": true,
+            "description": "Current password of the user.",
+            "type": "string"
+          },
+          {
+            "name": "newPassword",
+            "in": "body",
+            "required": true,
+            "description": "New password of the user.",
+            "type": "string"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Successfully changed password of the user."
+          },
+          "401": {
+            "description": "Not Authorized."
+          },
+          "404": {
+            "description": "No user account"
+          },
+          "422": {
+            "description": "Invalid password or parameter in body."
+          },
+          "500": {
+            "description": "Server side error."
+          }
+        }
+      }
+    },
+    "/api/events/all": {
+      "get": {
+        "description": "Get all events data.",
+        "tags": ["Events"],
+        "parameters": [],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Get data of all events with updated status",
+            "schema": {
+              "properties": {
+                "event": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "bar_id": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "start_date": {
+                      "type": "string"
+                    },
+                    "end_date": {
+                      "type": "string"
+                    },
+                    "participants": {
+                      "properties": {
+                        "username": {
+                          "type": "string"
+                        },
+                        "score": {
+                          "type": "number"
+                        }
+                      }
+                    },
+                    "receipts": {
+                      "properties": {
+                        "type": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not Authorized."
+          },
+          "404": {
+            "description": "Not events found."
+          },
+          "500": {
+            "description": "Server side error."
+          }
+        }
+      }
+    },
+    "/api/events/active": {
+      "get": {
+        "description": "Get all active events data.",
+        "tags": ["Events"],
+        "parameters": [],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Get data of all active events with updated status",
+            "schema": {
+              "type": "array",
+              "properties": {
+                "event": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "bar_id": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "start_date": {
+                      "type": "string"
+                    },
+                    "end_date": {
+                      "type": "string"
+                    },
+                    "participants": {
+                      "type": "array",
+                      "properties": {
+                        "username": {
+                          "type": "string"
+                        },
+                        "score": {
+                          "type": "number"
+                        }
+                      }
+                    },
+                    "receipts": {
+                      "type": "array",
+                      "properties": {
+                        "type": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not Authorized."
+          },
+          "404": {
+            "description": "Not events found."
+          },
+          "500": {
+            "description": "Server side error."
+          }
+        }
+      }
+    },
+    "/api/events/specific/:eventId": {
+      "get": {
+        "description": "Get all active events data.",
+        "tags": ["Events"],
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "description": "Event id.",
+            "type": "string"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Get data of specific event",
+            "schema": {
+              "properties": {
+                "event": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "bar_id": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "start_date": {
+                      "type": "string"
+                    },
+                    "end_date": {
+                      "type": "string"
+                    },
+                    "participants": {
+                      "type": "array",
+                      "properties": {
+                        "username": {
+                          "type": "string"
+                        },
+                        "score": {
+                          "type": "number"
+                        }
+                      }
+                    },
+                    "receipts": {
+                      "type": "array",
+                      "properties": {
+                        "type": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not Authorized."
+          },
+          "404": {
+            "description": "Not events found."
+          },
+          "500": {
+            "description": "Server side error."
+          }
+        }
+      }
+    },
+    "/api/events/finish/:eventId": {
+      "post": {
+        "description": "Finish specific event (set status to finished).",
+        "tags": ["Events"],
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the event to be specified as finished.",
+            "type": "string"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Event successfully set as finished"
+          },
+          "401": {
+            "description": "Not Authorized."
+          },
+          "404": {
+            "description": "Not event found."
+          },
+          "500": {
+            "description": "Server side error."
+          }
+        }
+      }
+    },
+    "/api/events/reviewing/:eventId": {
+      "post": {
+        "description": "Set status of event to reviewing.",
+        "tags": ["Events"],
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the event to be specified as reviewing.",
+            "type": "string"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Event successfully set as reviewing"
+          },
+          "401": {
+            "description": "Not Authorized."
+          },
+          "404": {
+            "description": "Not event found."
+          },
+          "500": {
+            "description": "Server side error."
+          }
+        }
+      }
+    },
+    "/api/events/:eventId": {
+      "delete": {
+        "description": "Delete event.",
+        "tags": ["Events"],
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the event to be deleted.",
+            "type": "string"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Event successfully deleted"
+          },
+          "401": {
+            "description": "Not Authorized."
+          },
+          "404": {
+            "description": "Not event found."
+          },
+          "500": {
+            "description": "Server side error."
+          }
+        }
+      }
+    },
+    "/api/events/": {
+      "post": {
+        "description": "Create new event.",
+        "tags": ["Events"],
+        "parameters": [
+          {
+            "name": "event",
+            "in": "body",
+            "required": true,
+            "description": "Event object.",
+            "schema": {
+              "$ref": "#/definitions/event"
+            }
+          },
+          {
+            "name": "rewards",
+            "in": "body",
+            "required": true,
+            "description": "Rewards object.",
+            "schema": {
+              "$ref": "#/definitions/rewards"
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "201": {
+            "description": "Event successfully created"
+          },
+          "401": {
+            "description": "Not Authorized."
+          },
+          "404": {
+            "description": "Not event found."
+          },
+          "500": {
+            "description": "Server side error."
+          }
+        }
+      }
+    },
+    "/api/bars/all": {
+      "get": {
+        "description": "Get all bars data.",
+        "tags": ["Bars"],
+        "parameters": [],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Data of all bars returned",
+            "schema": {
+              "properties": {
+                "bar": {
+                  "type": "object",
+                  "properties": {
+                    "manager": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "address": {
+                      "type": "object",
+                      "properties": {
+                        "street": {
+                          "type": "string"
+                        },
+                        "building_number": {
+                          "type": "string"
+                        },
+                        "postal_code": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not Authorized."
+          },
+          "404": {
+            "description": "Not bar found."
+          },
+          "500": {
+            "description": "Server side error."
+          }
+        }
+      }
+    },
+    "/api/bars/specific/:barId": {
+      "get": {
+        "description": "Get specific bar data.",
+        "tags": ["Bars"],
+        "parameters": [],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Data of specific bar returned",
+            "schema": {
+              "properties": {
+                "bar": {
+                  "type": "object",
+                  "properties": {
+                    "manager": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "address": {
+                      "type": "object",
+                      "properties": {
+                        "street": {
+                          "type": "string"
+                        },
+                        "building_number": {
+                          "type": "string"
+                        },
+                        "postal_code": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not Authorized."
+          },
+          "404": {
+            "description": "Not bar found."
+          },
+          "500": {
+            "description": "Server side error."
+          }
+        }
+      }
+    },
+    "/api/bars/": {
+      "post": {
+        "description": "Create new bar.",
+        "tags": ["Bars"],
+        "parameters": [
+          {
+            "name": "manager",
+            "in": "body",
+            "required": true,
+            "description": "Manager object.",
+            "schema": {
+              "$ref": "#/definitions/manager"
+            }
+          },
+          {
+            "name": "bar",
+            "in": "body",
+            "required": true,
+            "description": "Bar object.",
+            "schema": {
+              "$ref": "#/definitions/bar"
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "201": {
+            "description": "Bar successfully created"
+          },
+          "401": {
+            "description": "Not Authorized."
+          },
+          "422": {
+            "description": "Invalid body parameters."
+          },
+          "409": {
+            "description": "Name duplicity."
+          },
+          "500": {
+            "description": "Server side error."
+          }
+        }
+      }
+    },
+    "/api/bars/login": {
+      "post": {
+        "description": "Log in as bar to web application.",
+        "tags": ["Bars"],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "body",
+            "required": true,
+            "description": "Username of the manager of the bar.",
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "body",
+            "required": true,
+            "description": "Password of the manager of the bar.",
+            "type": "string"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Successfully logged in.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "role": {
+                  "type": "string"
+                },
+                "expirationDate": {
+                  "type": "date"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not Authorized."
+          },
+          "404": {
+            "description": "User not found."
+          },
+          "422": {
+            "description": "Invalid body parameters."
+          },
+          "500": {
+            "description": "Server side error."
+          }
+        }
+      }
+    },
+    "/api/bars/addImage/:barId": {
+      "post": {
+        "description": "Add image to bar profile.",
+        "tags": ["Bars"],
+        "parameters": [
+          {
+            "name": "image",
+            "in": "body",
+            "required": true,
+            "description": "Base64 image representation.",
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "in": "body",
+            "required": true,
+            "description": "Type of the image.",
+            "type": "string"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "201": {
+            "description": "Successfully added image.",
+            "schema": {
+              "properties": {
+                "image": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not Authorized."
+          },
+          "422": {
+            "description": "Invalid path parameter."
+          },
+          "500": {
+            "description": "Server side error."
+          }
+        }
+      }
+    },
+    "/api/bars/deleteImage/:barId": {
+      "put": {
+        "description": "Add image to bar profile.",
+        "tags": ["Bars"],
+        "parameters": [
+          {
+            "name": "imageId",
+            "in": "body",
+            "required": true,
+            "description": "Id of the image to be deleted.",
+            "type": "string"
+          },
+          {
+            "name": "barId",
+            "in": "path",
+            "required": true,
+            "description": "Id of bar.",
+            "type": "string"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Successfully deleted image."
+          },
+          "401": {
+            "description": "Not Authorized."
+          },
+          "422": {
+            "description": "Invalid path or body parameter."
+          },
+          "500": {
+            "description": "Server side error."
+          }
+        }
+      }
+    },
+    "/api/receipts/": {
+      "post": {
+        "description": "Create new receipt.",
+        "tags": ["Receipts"],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "body",
+            "required": true,
+            "description": "Receipt added by user with user_id.",
+            "type": "string"
+          },
+          {
+            "name": "event_id",
+            "in": "body",
+            "required": true,
+            "description": "Receipt is assigned to event.",
+            "type": "string"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "201": {
+            "description": "Receipt successfully created."
+          },
+          "401": {
+            "description": "Not Authorized."
+          },
+          "422": {
+            "description": "Invalid data posted in body."
+          },
+          "500": {
+            "description": "Server side error."
+          }
+        }
+      }
+    },
+    "/api/receipts/user/event/:eventId": {
+      "get": {
+        "description": "Get receipts of user in the  event.",
+        "tags": ["Receipts"],
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "description": "Id of event that we want to get receipts from.",
+            "type": "string"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Returns all receipts of the user in the event..",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user_id": {
+                  "type": "string"
+                },
+                "receipt_id": {
+                  "type": "string"
+                },
+                "event_id": {
+                  "type": "string"
+                },
+                "creation_date": {
+                  "type": "number"
+                },
+                "state": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "number"
+                },
+                "currency": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Server side error."
+          },
+          "404": {
+            "description": "No Receipts For Current User In This Event."
+          }
+        }
+      }
+    },
+    "/api/receipts/admin/event/:eventId": {
+      "get": {
+        "description": "Get receipts for event.",
+        "tags": ["Receipts"],
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "description": "Id of event that we want to get receipts from.",
+            "type": "string"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Returns all receipts of the event.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user_id": {
+                  "type": "string"
+                },
+                "receipt_id": {
+                  "type": "string"
+                },
+                "event_id": {
+                  "type": "string"
+                },
+                "creation_date": {
+                  "type": "number"
+                },
+                "state": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "number"
+                },
+                "currency": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized."
+          },
+          "500": {
+            "description": "Server side error."
+          },
+          "404": {
+            "description": "No Receipts For Current Event."
+          }
+        }
+      }
+    },
+    "/api/receipts/approve/:receiptId": {
+      "post": {
+        "description": "Approve receipt with receiptId.",
+        "tags": ["Receipts"],
+        "parameters": [
+          {
+            "name": "receiptId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the receipt to be approved.",
+            "type": "string"
+          },
+          {
+            "name": "value",
+            "in": "body",
+            "required": true,
+            "description": "Value of the receipt.",
+            "type": "number"
+          },
+          {
+            "name": "realReceiptId",
+            "in": "body",
+            "required": true,
+            "description": "Real Id of the receipt.",
+            "type": "string"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Receipt successfully approved."
+          },
+          "401": {
+            "description": "Not Authorized."
+          },
+          "422": {
+            "description": "Invalid data posted in body."
+          },
+          "500": {
+            "description": "Server side error."
+          }
+        }
+      }
+    },
+    "/api/receipts/reject/:receiptId": {
+      "post": {
+        "description": "Reject receipt with receiptId.",
+        "tags": ["Receipts"],
+        "parameters": [
+          {
+            "name": "receiptId",
+            "in": "path",
+            "required": true,
+            "description": "ID of the receipt to be rejected.",
+            "type": "string"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Receipt successfully rejected."
+          },
+          "401": {
+            "description": "Not Authorized."
+          },
+          "422": {
+            "description": "Invalid path parameter."
+          },
+          "500": {
+            "description": "Server side error."
+          }
+        }
+      }
+    },
+    "/api/transactions/bar/active": {
+      "get": {
+        "description": "Get active transactions in bar.",
+        "tags": ["Transactions"],
+        "parameters": [],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Successfully returning all active transactions in bar.",
+            "schema": {
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "number"
+                },
+                "validated": {
+                  "type": "boolean"
+                },
+                "expiration_date": {
+                  "type": "number"
+                },
+                "user_id": {
+                  "type": "string"
+                },
+                "bar_id": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not Authorized."
+          },
+          "500": {
+            "description": "Server side error."
+          }
+        }
+      }
+    },
+    "/api/transactions/bar/all": {
+      "get": {
+        "description": "Get all transactions in bar.",
+        "tags": ["Transactions"],
+        "parameters": [],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Successfully returning all transactions in bar.",
+            "schema": {
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "number"
+                },
+                "validated": {
+                  "type": "boolean"
+                },
+                "expiration_date": {
+                  "type": "number"
+                },
+                "user_id": {
+                  "type": "string"
+                },
+                "bar_id": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not Authorized."
+          },
+          "500": {
+            "description": "Server side error."
+          }
+        }
+      }
+    },
+    "/api/transactions/user/active": {
+      "get": {
+        "description": "Get active transactions for user.",
+        "tags": ["Transactions"],
+        "parameters": [],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Successfully returning all active transactions for user.",
+            "schema": {
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "number"
+                },
+                "validated": {
+                  "type": "boolean"
+                },
+                "expiration_date": {
+                  "type": "number"
+                },
+                "user_id": {
+                  "type": "string"
+                },
+                "bar_id": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not Authorized."
+          },
+          "500": {
+            "description": "Server side error."
+          }
+        }
+      }
+    },
+    "/api/transactions/": {
+      "post": {
+        "description": "Create new transaction.",
+        "tags": ["Transactions"],
+        "parameters": [
+          {
+            "name": "value",
+            "in": "body",
+            "required": true,
+            "description": "Value of the transaction.",
+            "type": "string"
+          },
+          {
+            "name": "bar_id",
+            "in": "body",
+            "required": true,
+            "description": "Bar id in which we want to create transaction.",
+            "type": "string"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "201": {
+            "description": "Transaction successfully created",
+            "schema": {
+              "$ref": "#/definitions/transaction"
+            }
+          },
+          "401": {
+            "description": "Not Authorized."
+          },
+          "404": {
+            "description": "User has no credits in this bar."
+          },
+          "409": {
+            "description": "This user has active transaction already."
+          },
+          "500": {
+            "description": "Server side error."
+          }
+        }
+      }
+    },
+    "/api/transactions/:transactionId": {
+      "delete": {
+        "description": "Delete transaction.",
+        "tags": ["Transactions"],
+        "parameters": [
+          {
+            "name": "transactionId",
+            "in": "path",
+            "required": true,
+            "description": "Id of the transaction that we want to delete.",
+            "type": "string"
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Successfully deleted transaction."
+          },
+          "401": {
+            "description": "Not Authorized."
+          },
+          "404": {
+            "description": "Transaction not found."
+          },
+          "403": {
+            "description": "You cannot delete valid transaction."
+          },
+          "422": {
+            "description": "Invalid parameter in path."
+          },
+          "500": {
+            "description": "Server side error."
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,504 @@
+{
+	"info": {
+		"_postman_id": "828f1e4f-3d91-437a-8a92-f1f7387a96fd",
+		"name": "Meeting Scheduler Requests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login admin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "adm1n",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8080/eshop//j_spring_security_check",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"eshop",
+						"",
+						"j_spring_security_check"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/eshop/j_spring_security_logout",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"eshop",
+						"j_spring_security_logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"age\": 21,\n    \"email\": \"registration1@meetingsched.com\",\n    \"firstName\": \"RegisteredUser\",\n    \"lastName\": \"Test\",\n    \"username\": \"test1\",\n    \"password\": \"$2a$10$cgx.D4.3RnLmjGZR05XdDeHEMv20E/GS47TZPzsw0X6Svm3XcCpAi\",\n    \"personalId\": 13133,\n    \"phoneNumber\": \"0907142345\",\n    \"role\": \"USER\",\n    \"logged\": false,\n    \"participatedMeetings\": [],\n    \"admin\": false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/eshop/rest/user/",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"eshop",
+						"rest",
+						"user",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Meeting",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n \"numberOfVotes\": 0,\r\n \"voteDeadline\": \"2016-01-25T21:34:55\",\r\n \"organizer\":  {\"id\": 1,\r\n                \"age\": 0,\r\n                \"email\": \"admin@meetingsched.com\",\r\n                \"firstName\": \"System\",\r\n                \"lastName\": \"Administrator\",\r\n                \"username\": \"admin\",\r\n                \"password\": \"$2a$10$cgx.D4.3RnLmjGZR05XdDeHEMv20E/GS47TZPzsw0X6Svm3XcCpAi\",\r\n                \"personalId\": 0,\r\n                \"phoneNumber\": \"0908142345\",\r\n                \"role\": \"ADMIN\",\r\n                \"logged\": false,\r\n                \"participatedMeetings\": [],\r\n                \"admin\": true }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/eshop/rest/meeting",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"eshop",
+						"rest",
+						"meeting"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "test4",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "adm1n",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8080/eshop/j_spring_security_check",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"eshop",
+						"j_spring_security_check"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Participant To Meeting",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"age\": 21,\r\n    \"email\": \"registration1@meetingsched.com\",\r\n    \"firstName\": \"RegisteredUser\",\r\n    \"lastName\": \"Test\",\r\n    \"username\": \"test1\",\r\n    \"password\": \"$2a$10$cgx.D4.3RnLmjGZR05XdDeHEMv20E/GS47TZPzsw0X6Svm3XcCpAi\",\r\n    \"personalId\": 13133,\r\n    \"phoneNumber\": \"0907142345\",\r\n    \"role\": \"USER\",\r\n    \"logged\": false,\r\n    \"participatedMeetings\": [],\r\n    \"admin\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/eshop/rest/meeting/103/participants",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"eshop",
+						"rest",
+						"meeting",
+						"103",
+						"participants"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove Participant From Meeting",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/eshop/rest/meeting/103/participants/104",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"eshop",
+						"rest",
+						"meeting",
+						"103",
+						"participants",
+						"104"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove Meeting",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/eshop/rest/meeting/103",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"eshop",
+						"rest",
+						"meeting",
+						"103"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Vote",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/eshop/rest/user/51/vote/254",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"eshop",
+						"rest",
+						"user",
+						"51",
+						"vote",
+						"254"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove User",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/eshop/rest/user/104",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"eshop",
+						"rest",
+						"user",
+						"104"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Organized Meetings",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/eshop/rest/organizer/1/meetings",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"eshop",
+						"rest",
+						"organizer",
+						"1",
+						"meetings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Personal Event To Meeting",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"location\" : {\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/eshop/rest/meeting/101/events/personal",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"eshop",
+						"rest",
+						"meeting",
+						"101",
+						"events",
+						"personal"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Online Event To Meeting",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/eshop/rest/meeting/101/events/online",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"eshop",
+						"rest",
+						"meeting",
+						"101",
+						"events",
+						"online"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove Event From Meeting",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/eshop/rest/meeting/103/events/x",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"eshop",
+						"rest",
+						"meeting",
+						"103",
+						"events",
+						"x"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Choose Event Of Meeting Automatically",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/eshop/rest/meeting/252/events/254/choose",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"eshop",
+						"rest",
+						"meeting",
+						"252",
+						"events",
+						"254",
+						"choose"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Participated Meetings",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/eshop/rest/participant/104/meetings",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"eshop",
+						"rest",
+						"participant",
+						"104",
+						"meetings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Leave Meeting",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/eshop/rest/participant/51/meeting/252",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"eshop",
+						"rest",
+						"participant",
+						"51",
+						"meeting",
+						"252"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Meeting",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/eshop/rest/meeting/101",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"eshop",
+						"rest",
+						"meeting",
+						"101"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
